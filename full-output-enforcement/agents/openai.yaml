@@ -1,0 +1,6 @@
+interface:
+  display_name: "Full Output Enforcement"
+  short_description: "Prevent partial or placeholder outputs"
+  default_prompt: "Use $full-output-enforcement to produce complete, unabridged code or content."
+policy:
+  allow_implicit_invocation: true

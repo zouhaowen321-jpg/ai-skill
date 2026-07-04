@@ -1,0 +1,6 @@
+interface:
+  display_name: "Redesign Existing Projects"
+  short_description: "Audit and upgrade existing UI quality"
+  default_prompt: "Use $redesign-existing-projects to audit and improve this existing website UI."
+policy:
+  allow_implicit_invocation: true

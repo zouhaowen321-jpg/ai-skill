@@ -1,0 +1,6 @@
+interface:
+  display_name: "Image To Code"
+  short_description: "Generate visual references before coding"
+  default_prompt: "Use $image-to-code to generate section references, analyze them, then implement the website."
+policy:
+  allow_implicit_invocation: true

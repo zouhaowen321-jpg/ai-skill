@@ -10,6 +10,14 @@ Each skill lives in its own folder:
 agent-reach/
   SKILL.md
   references/
+design-taste-frontend/
+  SKILL.md
+redesign-existing-projects/
+  SKILL.md
+image-to-code/
+  SKILL.md
+full-output-enforcement/
+  SKILL.md
 ```
 
 ## Local setup
@@ -30,3 +38,15 @@ The script links each skill into:
 
 Add future skills as new folders with a `SKILL.md`, commit them, push to GitHub,
 then pull and rerun the link script on any machine that should use them.
+
+## Current Skills
+
+| Skill | Use |
+| --- | --- |
+| `agent-reach` | Research the web, links, GitHub, social platforms, videos, and public discussions. |
+| `design-taste-frontend` | Build landing pages, portfolios, and visual frontend work without generic AI-looking design. |
+| `redesign-existing-projects` | Audit and improve an existing website or app UI without rewriting from scratch. |
+| `image-to-code` | Generate visual references first, analyze them, then implement a matching frontend. |
+| `full-output-enforcement` | Force complete outputs when an agent might otherwise truncate or use placeholders. |
+
+Taste Skill imports come from `Leonxlnx/taste-skill`; see `THIRD_PARTY_NOTICES.md`.
