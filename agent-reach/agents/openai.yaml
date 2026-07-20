@@ -1,6 +1,0 @@
-interface:
-  display_name: "Agent Reach"
-  short_description: "Route web and social research tools"
-  default_prompt: "Use $agent-reach to research a topic across web and social sources."
-policy:
-  allow_implicit_invocation: true
