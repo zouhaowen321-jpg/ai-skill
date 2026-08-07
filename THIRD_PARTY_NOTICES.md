@@ -10,6 +10,7 @@ Imported skills:
 - `redesign-existing-projects`
 - `image-to-code`
 - `full-output-enforcement`
+- `minimalist-skill`
 
 License: MIT
 
