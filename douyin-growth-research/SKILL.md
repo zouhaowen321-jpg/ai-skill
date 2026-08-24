@@ -1,6 +1,6 @@
 ---
 name: douyin-growth-research
-description: Use when the user asks to research or analyze Douyin/抖音, TikTok, viral videos, competitor accounts, hashtags, comments, video links, or Douyin account growth strategy. Integrates the local Evil0ctal/Douyin_TikTok_Download_API tool at ~/.agent-reach/tools/Douyin_TikTok_Download_API when available. Not for bypassing login, CAPTCHA, rate limits, mass scraping, auto-liking/commenting/following, or reposting copyrighted content.
+description: Use when the user asks to research or analyze Douyin/抖音, TikTok, viral videos, competitor accounts, hashtags, comments, video links, or Douyin account growth strategy. Integrates the local Evil0ctal/Douyin_TikTok_Download_API tool at ~/.agent-reach/tools/Douyin_TikTok_Download_API when available. Not for bypassing login, CAPTCHA, rate limits, mass scraping, auto-liking/commenting/following, or reposting copyrighted content. For turning one or more specific video links into Markdown for an agent to read, use douyin-video-reader instead.
 ---
 
 # Douyin Growth Research
