@@ -22,6 +22,10 @@ douyin-growth-research/
   SKILL.md
   scripts/
   references/
+douyin-video-reader/
+  SKILL.md
+  scripts/
+  references/
 ```
 
 ## Local setup
@@ -53,5 +57,6 @@ then pull and rerun the link script on any machine that should use them.
 | `image-to-code` | Generate visual references first, analyze them, then implement a matching frontend. |
 | `full-output-enforcement` | Force complete outputs when an agent might otherwise truncate or use placeholders. |
 | `douyin-growth-research` | Research Douyin/TikTok public content, competitor accounts, viral videos, and account strategy safely. |
+| `douyin-video-reader` | Read specific Douyin video links into Markdown (caption, transcript, stats, comments) for an agent to consume — no video download. |
 
 Taste Skill imports come from `Leonxlnx/taste-skill`; see `THIRD_PARTY_NOTICES.md`.

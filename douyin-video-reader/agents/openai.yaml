@@ -1,0 +1,6 @@
+interface:
+  display_name: "Douyin Video Reader"
+  short_description: "Read a Douyin video into Markdown, no download"
+  default_prompt: "Use $douyin-video-reader to read this Douyin video link into Markdown for my agent."
+policy:
+  allow_implicit_invocation: true
