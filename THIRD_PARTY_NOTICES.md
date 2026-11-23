@@ -36,3 +36,13 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ```
+
+## MediaCrawler
+
+Source: https://github.com/NanmiCoder/MediaCrawler (commit 94e233e5021686eacc219592efe812d5e855a95a)
+
+Imported into `MediaCrawler/` unmodified.
+
+License: NON-COMMERCIAL LEARNING LICENSE 1.1 (see `MediaCrawler/LICENSE`).
+Learning and research use only; no commercial use and no large-scale crawling
+without the copyright owner's written consent.
