@@ -1,49 +1,42 @@
 ---
 name: douyin-video-reader
-description: Use when the user gives one or more specific Douyin/抖音 video links (or IDs) and wants the content read, extracted, or summarized into Markdown for an agent or knowledge base to consume — caption/文案, spoken transcript when the caption isn't enough, author, publish time, engagement stats, and top comments. Reuses the local Evil0ctal/Douyin_TikTok_Download_API tool at ~/.agent-reach/tools/Douyin_TikTok_Download_API (same install douyin-growth-research uses) but calls its info-only route — never downloads or keeps a video/audio file. Not for downloading/saving videos, bulk account scraping, hashtag/competitor research, or growth strategy — use douyin-growth-research for that.
+description: Use when the user gives one or more specific Douyin/抖音 video links (or IDs) and wants the content read, extracted, or summarized into Markdown for an agent or knowledge base to consume — caption/文案, the platform's chapter summary, on-screen text and burned-in subtitles, the step-by-step operations and prompts shown in the video, author, publish time, engagement stats, and visible comments. Opens the public video page in a normal browser and reads only what the page itself loads, plus video frames viewed as screenshots — never downloads or keeps a video/audio file, never forges signatures, no speech-to-text. Not for downloading/saving videos, bulk account scraping, hashtag/competitor research, or growth strategy — use douyin-growth-research for that.
 ---
 
 # Douyin Video Reader
 
-Turn specific Douyin/抖音 video links into clean Markdown that an agent can read — text and metadata only, no video files kept anywhere.
+Turn specific Douyin/抖音 video links into clean Markdown that an agent can read — caption, chapters, on-screen text, subtitles and the operations shown in the video. Text only, no video files kept anywhere.
 
 ## Operating Rules
 
-1. Output is text/Markdown only. Never save, download, or leave a video or audio file anywhere in the workspace or repo. If the API response includes a play/download URL, keep it only as a citation string in the frontmatter — never fetch the binary.
-2. Call the local tool's info/data route only (e.g. `/api/hybrid/video_data` — check the running instance's `/docs` Swagger page for the exact current path/port; it can change across versions). Never call a download/save route.
-3. If the caption/文案 already carries the full message (common for text-heavy Douyin posts), use it directly as the content — don't run speech-to-text.
-4. If the spoken content clearly isn't in the caption (talking-head/vlog style) and no speech-to-text path is available, say so plainly in `## Transcript` instead of guessing or fabricating what was said.
-5. Never request, print, save, or commit Douyin cookies.
-6. Same platform boundaries as `douyin-growth-research`: no bypassing login/CAPTCHA/rate limits, no scraping private content, no automating likes/comments/follows/publishing.
+1. Output is text/Markdown only. Never save, download, or leave a video or audio file anywhere. Frames are drawn inside the page and read from screenshots in the conversation — never save frames as image files in the workspace or repo.
+2. Read only what the video page itself loads: its own `aweme/detail` response and the rendered page. Don't replay or re-sign API requests, don't generate signatures, don't use stealth/anti-detection browsers or flags.
+3. No speech-to-text. Anything only spoken aloud and never shown on screen is out of scope — say so plainly in the output instead of guessing.
+4. Never request, print, save, or commit Douyin cookies. Use the browser as it is; never log in or out on the user's behalf.
+5. If a CAPTCHA, verification page, or login wall hides the content, stop for that link and ask the user to handle it themselves in the browser. Never solve or bypass it. A login prompt that doesn't hide the content can be closed with its ✕.
+6. Same platform boundaries as `douyin-growth-research`: no scraping private content, no automating likes/comments/follows/publishing.
 
-## Quick Checks
+## Browser
 
-Run from this skill's own directory:
-
-```bash
-bash scripts/check_tool.sh
-```
-
-If missing or stale:
-
-```bash
-bash scripts/setup_tool.sh
-```
-
-This shares the same local install as `douyin-growth-research` (`~/.agent-reach/tools/Douyin_TikTok_Download_API`) — running either skill's setup is enough for both.
+- Default: Claude Code's built-in Browser pane (`mcp__Claude_Browser__*`). Use another normal browser tool only if that one is unavailable.
+- The built-in browser may already be signed in to a Douyin account; reading through it is recorded under that account. Mention this once if it matters to the user.
+- The old local API path (`scripts/check_tool.sh`, Evil0ctal v4 on port 8080) stopped working in 2026-11: Douyin now requires `uifid` + `x-secsdk-web-signature`. Don't use it, and don't run `scripts/setup_tool.sh` — it would `git pull` or `rm -rf` the tool folder that `douyin-growth-research` also uses.
 
 ## Workflow
 
-1. Collect the target link(s) from the user — one video or a batch.
-2. Run `scripts/check_tool.sh`. If missing, run `scripts/setup_tool.sh`.
-3. Start the tool per its own README if it isn't already running. Use its info-serving mode and confirm the current route/port from its `/docs` page — don't assume a hardcoded port.
-4. For each link, call the info-only route (e.g. `GET /api/hybrid/video_data?url=<link>&minimal=false`) — never a download route.
-5. Map the response onto the template in `references/markdown-schema.md`:
-   - `Caption` = caption/文案 verbatim when it carries the full message.
-   - `Transcript` = only filled in when speech-to-text actually ran this session; otherwise state plainly it wasn't generated.
-   - `Top Comments` = only comments the API actually returned; never invent any.
-6. Write one Markdown file per video (default `<video_id>.md` in the directory the user asked for), or print the block inline if they just want a quick read. For a batch, also print a one-line index (link → title → file path).
-7. If a link fails to resolve (private, deleted, region-locked, needs login), say so for that link and keep going with the rest — don't stop the whole batch.
+1. Collect the target link(s) from the user — one video or a batch. `v.douyin.com` short links redirect to `www.douyin.com/video/<aweme_id>`.
+2. Open the link in the browser and wait ~3 s. If verification or a login wall covers the content, follow Rule 5.
+3. Metadata: read the page's own `aweme/detail` response — caption, author, publish time, duration, chapter summary, subtitles if any (`references/browser-extraction.md` §1).
+4. Stats and visible comments from the page (§2). Comments = only what is rendered; don't scroll-scrape more unless the user asks.
+5. Subtitles: if `video.subtitle_infos` or the video's text tracks have content, use them. Otherwise burned-in subtitles are read from frames in step 6.
+6. On-screen text, subtitles and steps — the frame reader (§3). Do this when the user wants the video's content, steps or prompts, or when the caption and chapters don't carry them; skip it for a quick metadata-only read.
+   - Sample the chapter timestamps first, then every 2 s, 4 frames per screenshot; crop in on small text.
+   - Copy prompts, commands, menu paths and settings verbatim only when every character is legible. Mark unreadable parts `[看不清]`. Never fill gaps from guesswork.
+   - Turn what the frames show into numbered steps; each step says what to do and where, with any prompt in a code block.
+   - Run `__framesOff()` when done.
+7. Map everything onto the template in `references/markdown-schema.md`.
+8. Write one Markdown file per video (default `<video_id>.md` in the directory the user asked for), or print the block inline if they just want a quick read. For a batch, also print a one-line index (link → title → file path).
+9. If a link fails (private, deleted, region-locked, blocked by verification), say so for that link and keep going with the rest — don't stop the whole batch.
 
 ## Output Contract
 
@@ -51,6 +44,6 @@ Single video: return the Markdown block (frontmatter + sections) in chat, or wri
 
 Batch: an index list first, then each video's Markdown.
 
-If the user asked for analysis (not just extraction), add a `## Summary` (2–4 sentences: hook, topic, why the caption/transcript supports that read) — grounded only in the fetched content, no speculation beyond it.
+If the user asked for analysis (not just extraction), add a `## Summary` (2–4 sentences: hook, topic, why the content supports that read) — grounded only in what was read, no speculation beyond it.
 
-Read `references/markdown-schema.md` for the exact frontmatter fields and a worked example. Read `references/safety-and-usage.md` for the no-download boundary and prompt examples.
+Read `references/browser-extraction.md` for the tested browser snippets, `references/markdown-schema.md` for the frontmatter fields and a worked example, and `references/safety-and-usage.md` for the boundaries and prompt examples.

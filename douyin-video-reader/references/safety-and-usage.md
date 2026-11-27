@@ -2,36 +2,29 @@
 
 ## Allowed Use
 
-- Fetch a specific Douyin video's public caption, metadata, and visible engagement stats via the local tool's info route, and turn them into Markdown for the user's own agent or knowledge base.
-- Run speech-to-text on a video's audio only as an ephemeral step when the caption doesn't carry the spoken content, then discard the temp media immediately — the transcript text is the deliverable, never the media file.
-- Read public top comments the API returns, for context.
+- Open a specific public Douyin video page in a normal browser and read its caption, metadata, chapter summary, subtitles and visible engagement stats from what the page itself loads, then turn them into Markdown for the user's own agent or knowledge base.
+- Read on-screen text, burned-in subtitles and the operations shown in the video by drawing frames inside the page and viewing them as screenshots — the text is the deliverable, never the frames.
+- Read the public comments the page shows, for context.
 - Batch-read a list of links the user already has. For discovering new links via search/scraping, pair with `agent-reach` or `douyin-growth-research` instead.
 
 ## Disallowed Use
 
-- Do not save, download, export, or commit a video or audio file to disk, the workspace, or GitHub — not even temporarily beyond what a transcription step needs, and never as a task deliverable.
-- Do not call the tool's download/save routes — info routes only.
-- Do not bypass CAPTCHA, login gates, anti-bot systems, rate limits, paywalls, or private-account restrictions.
+- Do not save, download, export, or commit a video or audio file to disk, the workspace, or GitHub — not even temporarily.
+- Do not save frames or screenshots as image files in the workspace or repo, and don't use a screenshot tool's save-to-file option for them.
+- Do not run speech-to-text.
+- Do not replay or re-sign Douyin API requests, generate signatures (`a_bogus`, `X-Bogus`, `x-secsdk-web-signature`, …), or use stealth/anti-detection browsers or launch flags.
+- Do not bypass CAPTCHA, login gates, anti-bot systems, rate limits, paywalls, or private-account restrictions. When one blocks the content, stop and let the user handle it themselves.
+- Do not log in or out of Douyin on the user's behalf.
 - Do not automate likes, comments, follows, DMs, reposts, or publishing.
 - Do not scrape private user information.
-- Do not fabricate a transcript or comments when the API didn't return them — state they're unavailable instead.
+- Do not fabricate on-screen text, prompts, steps, or comments — mark unreadable text `[看不清]` and say what wasn't available.
 - Do not commit cookies, tokens, config files with secrets, or scraped personal data to GitHub.
 
-## Local Tool
+## Old Local Tool (no longer used)
 
-Default path (override with `DOUYIN_TOOL_DIR`):
+This skill used to call the local Evil0ctal/Douyin_TikTok_Download_API v4 at `~/.agent-reach/tools/Douyin_TikTok_Download_API` (port 8080, `/api/hybrid/video_data`). Since 2026-11 Douyin rejects its requests (`Uifid Not Found`, then `Signature Not Found`), so the browser path replaced it.
 
-```text
-~/.agent-reach/tools/Douyin_TikTok_Download_API
-```
-
-Source repository:
-
-```text
-https://github.com/Evil0ctal/Douyin_TikTok_Download_API
-```
-
-Shared with `douyin-growth-research` — one install serves both skills. This skill only ever calls its info/data route (e.g. `/api/hybrid/video_data`); check the running instance's `/docs` page for the exact current path. The upstream project may need a Douyin Cookie in `config.yaml` for some fields — keep that file local, never commit it. If a task needs it and it isn't configured, report the blocker and ask the user to configure it locally.
+The folder is still shared with `douyin-growth-research`. Don't run `scripts/setup_tool.sh` against it: upstream `main` is now v5, so the script's `git pull` or `rm -rf` + clone would replace v4.
 
 ## Prompt Examples
 
@@ -40,7 +33,11 @@ Shared with `douyin-growth-research` — one install serves both skills. This sk
 ```
 
 ```text
-用 douyin-video-reader 把这 5 条抖音链接的文案和评论整理成 markdown,不要下载视频。
+用 douyin-video-reader 把这条视频里每一步的操作和提示词整理出来:<链接>
+```
+
+```text
+用 douyin-video-reader 把这 5 条抖音链接的文案和评论整理成 markdown,不用看画面。
 ```
 
 ```text
