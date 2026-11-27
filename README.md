@@ -57,6 +57,6 @@ then pull and rerun the link script on any machine that should use them.
 | `image-to-code` | Generate visual references first, analyze them, then implement a matching frontend. |
 | `full-output-enforcement` | Force complete outputs when an agent might otherwise truncate or use placeholders. |
 | `douyin-growth-research` | Research Douyin/TikTok public content, competitor accounts, viral videos, and account strategy safely. |
-| `douyin-video-reader` | Read specific Douyin video links into Markdown (caption, transcript, stats, comments) for an agent to consume — no video download. |
+| `douyin-video-reader` | Read specific Douyin video links into Markdown (caption, chapters, on-screen text, subtitles, steps, stats, comments) via a normal browser — no video download, no speech-to-text. |
 
 Taste Skill imports come from `Leonxlnx/taste-skill`; see `THIRD_PARTY_NOTICES.md`.
